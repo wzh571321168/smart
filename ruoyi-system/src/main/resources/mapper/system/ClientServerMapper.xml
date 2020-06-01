@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ClientServerMapper">
+    
+    <resultMap type="ClientServer" id="ClientServerResult">
+        <result property="id"    column="id"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientNum"    column="client_num"    />
+    </resultMap>
+
+    <sql id="selectClientServerVo">
+        select id, client_name, client_num from client_server
+    </sql>
+
+    <select id="selectClientServerList" parameterType="ClientServer" resultMap="ClientServerResult">
+        <include refid="selectClientServerVo"/>
+        <where>  
+            <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
+            <if test="clientNum != null  and clientNum != ''"> and client_num = #{clientNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectClientServerById" parameterType="Long" resultMap="ClientServerResult">
+        <include refid="selectClientServerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertClientServer" parameterType="ClientServer" useGeneratedKeys="true" keyProperty="id">
+        insert into client_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientName != null  and clientName != ''">client_name,</if>
+            <if test="clientNum != null  and clientNum != ''">client_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientName != null  and clientName != ''">#{clientName},</if>
+            <if test="clientNum != null  and clientNum != ''">#{clientNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClientServer" parameterType="ClientServer">
+        update client_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientName != null  and clientName != ''">client_name = #{clientName},</if>
+            <if test="clientNum != null  and clientNum != ''">client_num = #{clientNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteClientServerById" parameterType="Long">
+        delete from client_server where id = #{id}
+    </delete>
+
+    <delete id="deleteClientServerByIds" parameterType="String">
+        delete from client_server where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
