@@ -116,6 +116,21 @@
 			<artifactId>opencv-platform</artifactId>
 			<version>3.4.2-1.4.2</version>
 		</dependency>
+
+		<!--google开源文字识别-->
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>4.1.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.jna</groupId>
+					<artifactId>jna</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
     </dependencies>
   
 </project>
