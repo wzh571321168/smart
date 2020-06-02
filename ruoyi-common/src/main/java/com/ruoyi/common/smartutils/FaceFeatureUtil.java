@@ -14,7 +14,7 @@ import java.util.List;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 
-@Component
+//@Component
 public class FaceFeatureUtil {
     @Autowired
     private InitCV initCV;

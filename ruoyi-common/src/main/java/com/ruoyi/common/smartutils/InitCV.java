@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-@Component
+//@Component
 public class InitCV {
     public  final String BASE64="BASE64";
     public  final String URL="URL";

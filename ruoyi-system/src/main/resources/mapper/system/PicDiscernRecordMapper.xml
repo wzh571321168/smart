@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PicDiscernRecordMapper">
+    
+    <resultMap type="PicDiscernRecord" id="PicDiscernRecordResult">
+        <result property="id"    column="id"    />
+        <result property="picPath"    column="pic_path"    />
+        <result property="path"    column="path"    />
+        <result property="type"    column="type"    />
+        <result property="result"    column="result"    />
+        <result property="discernTime"    column="discern_time"    />
+    </resultMap>
+
+    <sql id="selectPicDiscernRecordVo">
+        select id, pic_path, path, type, result, discern_time from pic_discern_record
+    </sql>
+
+    <select id="selectPicDiscernRecordList" parameterType="PicDiscernRecord" resultMap="PicDiscernRecordResult">
+        <include refid="selectPicDiscernRecordVo"/>
+        <where>  
+            <if test="picPath != null  and picPath != ''"> and pic_path = #{picPath}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+            <if test="discernTime != null "> and discern_time = #{discernTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPicDiscernRecordById" parameterType="Long" resultMap="PicDiscernRecordResult">
+        <include refid="selectPicDiscernRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPicDiscernRecord" parameterType="PicDiscernRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into pic_discern_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picPath != null  and picPath != ''">pic_path,</if>
+            <if test="path != null  and path != ''">path,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="result != null  and result != ''">result,</if>
+            <if test="discernTime != null ">discern_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picPath != null  and picPath != ''">#{picPath},</if>
+            <if test="path != null  and path != ''">#{path},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="result != null  and result != ''">#{result},</if>
+            <if test="discernTime != null ">#{discernTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePicDiscernRecord" parameterType="PicDiscernRecord">
+        update pic_discern_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="picPath != null  and picPath != ''">pic_path = #{picPath},</if>
+            <if test="path != null  and path != ''">path = #{path},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="result != null  and result != ''">result = #{result},</if>
+            <if test="discernTime != null ">discern_time = #{discernTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePicDiscernRecordById" parameterType="Long">
+        delete from pic_discern_record where id = #{id}
+    </delete>
+
+    <delete id="deletePicDiscernRecordByIds" parameterType="String">
+        delete from pic_discern_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * nio服务端
  */
-@Component
+//@Component
 @Slf4j
 public class NioServer {
 

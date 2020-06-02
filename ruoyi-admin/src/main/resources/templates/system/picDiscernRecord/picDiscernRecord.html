@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <th:block th:include="include :: header('文件上传')" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-picDiscernRecord-add">
+        <div class="ibox-content col-sm-4" >
+            <div class="form-group">
+                <label class="font-noraml">识别图片</label>
+                <div class="file-loading" style="text-align: center">
+                    <input id="fileinput-demo-1" type="file" multiple>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: bootstrap-fileinput-js" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#fileinput-demo-1").fileinput({
+            'theme': 'explorer-fas',
+            'uploadUrl': '#',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            maxFileCount:1,
+            dropZoneTitleClass:'hidden'
+
+        });
+    });
+</script>
+</body>
+</html>
