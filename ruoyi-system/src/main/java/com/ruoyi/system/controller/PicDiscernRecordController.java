@@ -1,6 +1,11 @@
 package com.ruoyi.system.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import com.ruoyi.common.smartutils.MatUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,9 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
 
 /**
  * 图片识别记录Controller
@@ -122,5 +130,24 @@ public class PicDiscernRecordController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(picDiscernRecordService.deletePicDiscernRecordByIds(ids));
+    }
+
+
+    /**
+     * 图片识别记录
+     */
+    @RequiresPermissions("system:picDiscernRecord:discern")
+    @Log(title = "图片识别记录", businessType = BusinessType.DELETE)
+    @PostMapping( "/discern")
+    @ResponseBody
+    public Object discern(MultipartFile[] files,Integer type)
+    {
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(files[0].getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return picDiscernRecordService.picDisCern(type,bufferedImage);
     }
 }

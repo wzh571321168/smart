@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import com.ruoyi.system.domain.PicDiscernRecord;
 
@@ -58,4 +59,6 @@ public interface IPicDiscernRecordService
      * @return 结果
      */
     public int deletePicDiscernRecordById(Long id);
+
+    Object picDisCern(Integer type,BufferedImage bufferedImage);
 }

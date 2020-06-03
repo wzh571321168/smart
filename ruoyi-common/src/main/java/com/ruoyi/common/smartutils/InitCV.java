@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-//@Component
+@Component
 public class InitCV {
     public  final String BASE64="BASE64";
     public  final String URL="URL";
@@ -29,12 +29,12 @@ public class InitCV {
         }else{
             path=basePath;
         }
-        System.load(path+"cv\\opencv_java412.dll");
-        faceDetector = new opencv_objdetect.CascadeClassifier(path.substring(1,path.length())+"cv\\haarcascade_frontalface_alt.xml");
+        System.load(path+ "cv/opencv_java412.dll");
+        faceDetector = new opencv_objdetect.CascadeClassifier(path.substring(1,path.length())+ "cv/haarcascade_frontalface_alt.xml");
         //System.out.println(path.substring(1,path.length())+"cv\\haarcascade_frontalface_alt.xml");
         /*faceDetector = new opencv_objdetect.CascadeClassifier(
                 "E:/java/work/mycloud/smart/target/classes/cv\\haarcascade_frontalface_alt.xml");*/
 
-        eyeDetector = new opencv_objdetect.CascadeClassifier(path.substring(1,path.length())+"cv\\haarcascade_eye.xml");
+        eyeDetector = new opencv_objdetect.CascadeClassifier(path.substring(1,path.length())+ "cv/haarcascade_eye.xml");
     }
 }

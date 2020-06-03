@@ -14,7 +14,7 @@ import java.util.List;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 
-//@Component
+@Component
 public class FaceFeatureUtil {
     @Autowired
     private InitCV initCV;
@@ -34,8 +34,6 @@ public class FaceFeatureUtil {
 
         RectVector faces = new RectVector();
 
-        //加载检测器
-        //opencv_objdetect.CascadeClassifier face_cascade = new opencv_objdetect.CascadeClassifier("D:\\soft\\openCV3\\opencv\\sources\\data\\haarcascades_cuda\\haarcascade_frontalface_alt.xml");//初始化人脸检测器
 
         //当前帧图片进行灰度+直方均衡
        Mat videoMatGray = new Mat();
