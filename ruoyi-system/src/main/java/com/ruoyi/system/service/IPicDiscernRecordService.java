@@ -62,5 +62,5 @@ public interface IPicDiscernRecordService
      */
     public int deletePicDiscernRecordById(Long id);
 
-    Object picDisCern(Integer type, MultipartFile[] files) throws IOException;
+    Object picDisCern(String type, MultipartFile[] files) throws IOException;
 }

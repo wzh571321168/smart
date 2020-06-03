@@ -121,10 +121,11 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
     private String picPath;
 
     @Override
-    public Object picDisCern(Integer type, MultipartFile[] files) throws IOException{
+    public Object picDisCern(String type, MultipartFile[] files) throws IOException{
         BufferedImage bufferedImage = ImageIO.read(files[0].getInputStream());
         PicDiscernRecord picDiscernRecord=new PicDiscernRecord();
         picDiscernRecord.setDiscernTime(new Date());
+        picDiscernRecord.setType(type);
         String picName= UUID.randomUUID().toString();
         String path=picPath+picName+".png";
 

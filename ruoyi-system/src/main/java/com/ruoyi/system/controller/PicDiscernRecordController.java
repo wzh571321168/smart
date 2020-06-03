@@ -140,7 +140,7 @@ public class PicDiscernRecordController extends BaseController
     @Log(title = "图片识别记录", businessType = BusinessType.DELETE)
     @PostMapping( "/discern")
     @ResponseBody
-    public Object discern(MultipartFile[] files,Integer type)
+    public Object discern(MultipartFile[] files,String type)
     {
         Object o = null;
         try {
