@@ -12,9 +12,11 @@ import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.enums.PicDiscernType;
 import com.ruoyi.common.smartutils.FaceFeatureUtil;
 import com.ruoyi.common.smartutils.MatUtils;
+import com.ruoyi.common.smartutils.TesseracUtils;
 import com.ruoyi.common.vo.DiscernResultVo;
 import org.apache.commons.lang3.StringUtils;
 import org.bytedeco.javacpp.opencv_core;
+import org.opencv.core.Mat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ import com.ruoyi.system.mapper.PicDiscernRecordMapper;
 import com.ruoyi.system.domain.PicDiscernRecord;
 import com.ruoyi.system.service.IPicDiscernRecordService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 
@@ -116,22 +121,26 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
     private String picPath;
 
     @Override
-    public Object picDisCern(Integer type,BufferedImage bufferedImage) {
+    public Object picDisCern(Integer type, MultipartFile[] files) throws IOException{
+        BufferedImage bufferedImage = ImageIO.read(files[0].getInputStream());
         PicDiscernRecord picDiscernRecord=new PicDiscernRecord();
         picDiscernRecord.setDiscernTime(new Date());
         String picName= UUID.randomUUID().toString();
         String path=picPath+picName+".png";
-        try {
-            MatUtils.writeImageFile(bufferedImage,path);
-            picDiscernRecord.setPath(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        MatUtils.writeImageFile(bufferedImage,path);
+        picDiscernRecord.setPath(path);
         DiscernResultVo discernResultVo=null;
         if(type== PicDiscernType.FACE.getType()){
             discernResultVo=face(bufferedImage);
+        }else if(type== PicDiscernType.CHARACTOR.getType()){
+            discernResultVo=charactor(bufferedImage);
+        }else if(type== PicDiscernType.COMPARE.getType()){
+            BufferedImage bufferedImage2 = ImageIO.read(files[1].getInputStream());
+            discernResultVo=compare(bufferedImage,bufferedImage2);
         }
         picDiscernRecord.setResult(JSON.toJSONString(discernResultVo));
+        insertPicDiscernRecord(picDiscernRecord);
         return discernResultVo;
     }
 
@@ -152,6 +161,29 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
         }else {
             discernResultVo.setResult("图片中未识别人脸");
         }
+        return discernResultVo;
+    }
+    public DiscernResultVo charactor(BufferedImage bufferedImage){
+        DiscernResultVo discernResultVo=new DiscernResultVo();
+        String s = TesseracUtils.FindOCR(bufferedImage, true);
+        discernResultVo.setResult(s);
+        return discernResultVo;
+    }
+
+    public DiscernResultVo compare(BufferedImage bufferedImage1,BufferedImage bufferedImage2){
+        DiscernResultVo discernResultVo=new DiscernResultVo();
+        List<opencv_core.Mat> matList1 = faceFeatureUtil.detectFace(MatUtils.toMat(bufferedImage1));
+        List<opencv_core.Mat> matList2 = faceFeatureUtil.detectFace(MatUtils.toMat(bufferedImage2));
+        if(matList1==null||matList1.size()>1||matList2==null||matList2.size()>1){
+            discernResultVo.setResult("第一张图片中识别人脸数为"+matList1.size()+"，第二张图片中识别人脸数为"+matList1.size());
+            return discernResultVo;
+        }else {
+            Mat mat1 = new Mat(matList1.get(0).address());
+            Mat mat2 = new Mat(matList2.get(0).address());
+            double v = faceFeatureUtil.compareImage(mat1, mat2);
+            discernResultVo.setResult("相似度："+v);
+        }
+
         return discernResultVo;
     }
 }

@@ -29,7 +29,8 @@ public class InitCV {
         }else{
             path=basePath;
         }
-        System.load(path+ "cv/opencv_java412.dll");
+        System.load(path.substring(1,path.length())+ "cv/opencv_java412.dll");
+        System.out.println(path.substring(1,path.length())+ "cv/opencv_java412.dll");
         faceDetector = new opencv_objdetect.CascadeClassifier(path.substring(1,path.length())+ "cv/haarcascade_frontalface_alt.xml");
         //System.out.println(path.substring(1,path.length())+"cv\\haarcascade_frontalface_alt.xml");
         /*faceDetector = new opencv_objdetect.CascadeClassifier(

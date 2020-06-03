@@ -2,13 +2,14 @@ package com.ruoyi.common.smartutils;
 
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacpp.opencv_imgproc;
-import org.opencv.dnn.Dnn;
-import org.opencv.dnn.Net;
+import org.opencv.core.MatOfFloat;
+import org.opencv.core.MatOfInt;
 import org.opencv.imgproc.Imgproc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
@@ -60,6 +61,24 @@ public class FaceFeatureUtil {
 
         return matList;
 //        waitKey(0);
+    }
+
+    public  double compareImage(org.opencv.core.Mat mat_1, org.opencv.core.Mat mat_2) {
+
+        org.opencv.core.Mat hist_1 = new org.opencv.core.Mat();
+        org.opencv.core.Mat hist_2 = new org.opencv.core.Mat();
+
+        //颜色范围
+        MatOfFloat ranges = new MatOfFloat(0f, 256f);
+        //直方图大小， 越大匹配越精确 (越慢)
+        MatOfInt histSize = new MatOfInt(1000);
+
+        Imgproc.calcHist(Arrays.asList(mat_1), new MatOfInt(0), new org.opencv.core.Mat(), hist_1, histSize, ranges);
+        Imgproc.calcHist(Arrays.asList(mat_2), new MatOfInt(0), new org.opencv.core.Mat(), hist_2, histSize, ranges);
+
+        // CORREL 相关系数
+        double res = Imgproc.compareHist(hist_1, hist_2, Imgproc.CV_COMP_CORREL);
+        return res;
     }
     //import cv2 as cv
     //import time

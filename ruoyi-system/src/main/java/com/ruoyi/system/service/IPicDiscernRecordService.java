@@ -1,8 +1,10 @@
 package com.ruoyi.system.service;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import com.ruoyi.system.domain.PicDiscernRecord;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 图片识别记录Service接口
@@ -60,5 +62,5 @@ public interface IPicDiscernRecordService
      */
     public int deletePicDiscernRecordById(Long id);
 
-    Object picDisCern(Integer type,BufferedImage bufferedImage);
+    Object picDisCern(Integer type, MultipartFile[] files) throws IOException;
 }

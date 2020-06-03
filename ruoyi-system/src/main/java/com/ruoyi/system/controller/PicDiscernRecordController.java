@@ -142,12 +142,12 @@ public class PicDiscernRecordController extends BaseController
     @ResponseBody
     public Object discern(MultipartFile[] files,Integer type)
     {
-        BufferedImage bufferedImage = null;
+        Object o = null;
         try {
-            bufferedImage = ImageIO.read(files[0].getInputStream());
+            o = picDiscernRecordService.picDisCern(type, files);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return picDiscernRecordService.picDisCern(type,bufferedImage);
+        return o;
     }
 }
