@@ -10,6 +10,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.enums.PicDiscernType;
+import com.ruoyi.common.smartutils.Base64Utils;
 import com.ruoyi.common.smartutils.FaceFeatureUtil;
 import com.ruoyi.common.smartutils.MatUtils;
 import com.ruoyi.common.smartutils.TesseracUtils;
@@ -132,16 +133,16 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
         MatUtils.writeImageFile(bufferedImage,path);
         picDiscernRecord.setPath(path);
         DiscernResultVo discernResultVo=null;
-        if(type== PicDiscernType.FACE.getType()){
+        if(type.equals(PicDiscernType.FACE.getType())){
             discernResultVo=face(bufferedImage);
-        }else if(type== PicDiscernType.CHARACTOR.getType()){
+        }else if(type.equals(PicDiscernType.CHARACTOR.getType())){
             discernResultVo=charactor(bufferedImage);
-        }else if(type== PicDiscernType.COMPARE.getType()){
+        }else if(type.equals( PicDiscernType.COMPARE.getType())){
             BufferedImage bufferedImage2 = ImageIO.read(files[1].getInputStream());
             discernResultVo=compare(bufferedImage,bufferedImage2);
         }
         picDiscernRecord.setResult(JSON.toJSONString(discernResultVo));
-        insertPicDiscernRecord(picDiscernRecord);
+        //insertPicDiscernRecord(picDiscernRecord);
         return discernResultVo;
     }
 
@@ -156,7 +157,7 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
             for(int i=1;i<=matList.size();i++){
                 String resultPath=picPath+"result/"+picName+"-face"+i+".png";
                 imwrite(resultPath, matList.get(i-1));
-                list.add(resultPath);
+                list.add(Base64Utils.imageToBase64(resultPath));
             }
             discernResultVo.setResultPic(list);
         }else {

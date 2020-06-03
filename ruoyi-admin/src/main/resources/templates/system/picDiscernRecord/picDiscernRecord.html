@@ -7,11 +7,27 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-picDiscernRecord-add">
+        <label class="col-sm-12">识别图片</label>
         <div class="ibox-content col-sm-4" >
             <div class="form-group">
-                <label class="font-noraml">识别图片</label>
                 <div class="file-loading" style="text-align: center">
-                    <input id="fileinput-demo-1" type="file" multiple>
+                    <input id="fileinput-demo-1" name="files" type="file" multiple>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 -input" style="height: 315px;border-top:1px solid #e7eaec" >
+            <div style="border:1px solid #ddd;height: 90%;margin: 15px 15px;border-radius: 5px">
+                <div class="form-group" style="margin: 15px">
+                    <label class="col-sm-3 control-label">识别结果：</label>
+                    <div class="col-sm-6">
+                        <input id="result" name="result" readonly="true" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group" style="margin: 20px">
+                    <label class="col-sm-3 control-label">人脸图片：</label>
+                    <div id="pics">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,13 +39,25 @@
     $(document).ready(function () {
         $("#fileinput-demo-1").fileinput({
             'theme': 'explorer-fas',
-            'uploadUrl': '#',
+            'uploadUrl': '/system/picDiscernRecord/discern',
             overwriteInitial: false,
             initialPreviewAsData: true,
             maxFileCount:1,
-            dropZoneTitleClass:'hidden'
-
+            uploadExtraData: {'type':'1'}
         });
+    });
+    $("#fileinput-demo-1").on("fileuploaded", function(event, data, previewId, index) {
+        $("#pics").html();
+        var resultPic=data.response.resultPic;
+
+        var conParamsHtml = $.map(resultPic,function (ele,index) {
+                return '<div class="col-sm-6" style="box-shadow: 0 0 10px 0 rgba(0,0,0,.2)">' +
+                    '<img name="result" src="data:image/png;base64,'+ele+'"style="height:170px;margin: 10px 10px">' +
+                '                  </div>';
+           
+        }).join('')
+        $("#pics").append(conParamsHtml);
+        $("#result").val(data.response.result)
     });
 </script>
 </body>
