@@ -3,7 +3,7 @@ server:
   port: 9999 #项目端口
 
 netty:
-  port: 520
+  port: 1234
   host: 127.0.0.1
   clientId: 01
 

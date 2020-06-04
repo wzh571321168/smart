@@ -1,6 +1,7 @@
 package com.ruoyi.client.netty;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -43,11 +44,12 @@ public class NioClient {
                     .handler(new NettyClientChannelInitializer(clientId));
             ChannelFuture future = b.connect(host, port).sync();
             future.channel().closeFuture().sync();
-            /*future.channel().writeAndFlush("id="+clientId);
+            /*future.channel().writeAndFlush(Unpooled.buffer().writeBytes(("id="+clientId).getBytes()));
             future.channel().closeFuture().sync();*/
 
-
+            System.out.println(111);
         } catch (InterruptedException e) {
+            e.printStackTrace();
             log.error("netty服务异常");
         }
 

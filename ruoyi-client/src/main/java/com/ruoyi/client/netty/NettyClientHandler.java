@@ -50,7 +50,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             buf.readBytes(data);
             String request = new String(data, "utf-8");*/
             System.out.println("Client: " + msg);
-           // ctx.writeAndFlush("收到");
+            ctx.writeAndFlush("收到");
 
         } finally {
             ReferenceCountUtil.release(msg);

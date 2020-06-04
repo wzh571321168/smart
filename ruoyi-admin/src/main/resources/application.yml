@@ -136,4 +136,4 @@ pic:
   path: d:/pic/
 
 netty:
-  port: 520
+  port: 1234

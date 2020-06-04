@@ -22,7 +22,7 @@ public class NioServerHandler  extends ChannelInboundHandlerAdapter {
 
         String id = msg.toString().replace("id=","");
         log.info("接收客户端消息："+id);
-        ctx.writeAndFlush(Unpooled.copiedBuffer("收到了".getBytes()));
+        //ctx.writeAndFlush(Unpooled.copiedBuffer("收到了".getBytes()));
         if(id !=null &&!id.equals("")) {
             if (NioServer.map.get(id) != null && NioServer.map.get(id).equals(ctx)) {
 
