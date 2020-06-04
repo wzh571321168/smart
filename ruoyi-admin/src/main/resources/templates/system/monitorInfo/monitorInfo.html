@@ -11,30 +11,30 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>null：</label>
+                                <label>rtsp地址：</label>
                                 <input type="text" name="rtspAddress"/>
                             </li>
                             <li>
-                                <label>null：</label>
+                                <label>名称：</label>
                                 <input type="text" name="name"/>
                             </li>
                             <li>
-                                <label>null：</label>
+                                <label>uid：</label>
                                 <input type="text" name="uid"/>
                             </li>
                             <li>
-                                <label>null：</label>
+                                <label>状态：</label>
                                 <select name="status">
                                     <option value="">所有</option>
                                     <option value="-1">代码生成请选择字典属性</option>
                                 </select>
                             </li>
                             <li>
-                                <label>null：</label>
+                                <label>客户端id：</label>
                                 <input type="text" name="clientId"/>
                             </li>
                             <li>
-                                <label>null：</label>
+                                <label>分析类型：</label>
                                 <select name="analyzeType">
                                     <option value="">所有</option>
                                     <option value="-1">代码生成请选择字典属性</option>
@@ -87,38 +87,59 @@
                 },
                 {
                     field: 'id', 
-                    title: 'null',
+                    title: 'id',
                     visible: false
                 },
                 {
                     field: 'rtspAddress', 
-                    title: 'null'
+                    title: 'rtsp地址'
                 },
                 {
                     field: 'name', 
-                    title: 'null'
+                    title: '名称'
                 },
                 {
                     field: 'uid', 
-                    title: 'null'
+                    title: 'uid'
                 },
                 {
                     field: 'status', 
-                    title: 'null'
+                    title: '状态'
                 },
                 {
                     field: 'clientId', 
-                    title: 'null'
+                    title: '客户端id'
                 },
                 {
                     field: 'analyzeType', 
-                    title: 'null'
+                    title: '分析类型'
                 },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
+                        actions.push('<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal2">播放</button>\n' +
+                            '                    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">\n' +
+                            '                        <div class="modal-dialog">\n' +
+                            '                            <div class="modal-content animated flipInY">\n' +
+                            '                                <div class="modal-header">\n' +
+                            '                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>\n' +
+                            '                                    </button>\n' +
+                            '                                    <h4 class="modal-title">窗口标题</h4>\n' +
+                            '                                    <small class="font-bold">这里可以显示副标题。\n' +
+                            '                                </div>\n' +
+
+                            '<video width="1120" height="540" controls="controls" id="video" preload="auto"     >'+
+                            '<source src="getVideos"   type="video/mp4">'+
+                            '</video>' +
+                            '                                <div class="modal-footer">\n' +
+                            '                                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>\n' +
+                            '                                    <button type="button" class="btn btn-primary">保存</button>\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>');
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
@@ -127,6 +148,9 @@
             };
             $.table.init(options);
         });
+        function play(id) {
+            alert("play"+id);
+        }
     </script>
 </body>
 </html>
