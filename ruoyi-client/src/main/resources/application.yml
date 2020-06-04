@@ -1,0 +1,12 @@
+
+server:
+  port: 9999 #项目端口
+
+netty:
+  port: 520
+  host: 127.0.0.1
+  clientId: 01
+
+
+logging:
+  config:classpath:logback-spring.xml
