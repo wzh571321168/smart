@@ -134,3 +134,6 @@ opencv:
 
 pic:
   path: d:/pic/
+
+netty:
+  port: 520

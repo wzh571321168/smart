@@ -142,7 +142,14 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
             discernResultVo=compare(bufferedImage,bufferedImage2);
         }
         picDiscernRecord.setResult(JSON.toJSONString(discernResultVo));
-        //insertPicDiscernRecord(picDiscernRecord);
+        insertPicDiscernRecord(picDiscernRecord);
+        if(discernResultVo.getResultPic()!=null&&discernResultVo.getResultPic().size()>0){
+            List<String> list=new ArrayList<>();
+            for(String str:discernResultVo.getResultPic()){
+                list.add(Base64Utils.imageToBase64(str));
+            }
+            discernResultVo.setResultPic(list);
+        }
         return discernResultVo;
     }
 
@@ -157,7 +164,7 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
             for(int i=1;i<=matList.size();i++){
                 String resultPath=picPath+"result/"+picName+"-face"+i+".png";
                 imwrite(resultPath, matList.get(i-1));
-                list.add(Base64Utils.imageToBase64(resultPath));
+                list.add(resultPath);
             }
             discernResultVo.setResultPic(list);
         }else {

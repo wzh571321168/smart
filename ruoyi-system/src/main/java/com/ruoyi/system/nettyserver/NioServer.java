@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * nio服务端
  */
-//@Component
+@Component
 @Slf4j
 public class NioServer {
 
@@ -57,7 +57,6 @@ public class NioServer {
             log.info("netty服务启动，端口："+port);
             // 关闭服务器通道
             //f.channel().closeFuture().sync();
-            System.out.println(111);
         } catch (Exception e){
             //  logger.info("服务停止："+ DateUtils.dateToString(new Date()));
            log.error("netty服务异常");
