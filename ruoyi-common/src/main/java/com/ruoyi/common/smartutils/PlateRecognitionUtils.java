@@ -1,21 +1,20 @@
-package com.ruoyi.common.smartutils;/*
-package com.wang.smart.core.smartutils;
+package com.ruoyi.common.smartutils;
+
 
 import java.math.BigDecimal;
 import java.util.Vector;
 
-import com.wang.smart.plate.CharsRecognise;
-import com.wang.smart.plate.PlateDetect;
+import com.ruoyi.common.plate.CharsRecognise;
+import com.ruoyi.common.plate.PlateDetect;
 import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_core.Mat;
 
 
 
-*/
 /**
  * 车牌识别
  * @author eguid
- **//*
+ **/
 
 
 
@@ -28,12 +27,11 @@ public class PlateRecognitionUtils {
         cr = new CharsRecognise();
     }
 
-*/
 /**
      * 单个车牌识别
      * @param mat
      * @return
- **//*
+ */
 
 
 
@@ -46,12 +44,12 @@ public class PlateRecognitionUtils {
         }
         return null;
     }
-*/
 /**
      * 多车牌识别
      * @param mat
      * @return
-     *//*
+
+*/
 
 
     public static String[] mutiPlateRecognise(Mat mat){
@@ -69,24 +67,23 @@ public class PlateRecognitionUtils {
         }
         return null;
     }
-*/
 /**
      * 单个车牌识别
      * @param mat
      * @return
-*//*
+*/
+
 
 
     public static String plateRecognise(String imgPath){
         Mat src = opencv_imgcodecs.imread(imgPath);
         return plateRecognise(src);
     }
-*/
 /**
      * 多车牌识别
      * @param mat
      * @return
-     *//*
+     */
 
 
     public static String[] mutiPlateRecognise(String imgPath){
@@ -123,4 +120,3 @@ public class PlateRecognitionUtils {
         System.err.println("总耗时："+sumTime+"ms,平均处理时长："+sumTime/sum+"ms,错误数量："+errNum+"，正确识别率："+c+"%");
     }
 }
-*/
