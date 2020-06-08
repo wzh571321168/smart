@@ -35,24 +35,25 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //CLIENT_MAP.put(ctx.channel().id(), ctx);
-        ctx.channel().writeAndFlush(Unpooled.buffer().writeBytes(("id="+clientId).getBytes()));
+        ctx.channel().writeAndFlush("id="+clientId);
         //super.channelActive(ctx);
         log.info("ClientHandler Active");
     }
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
             NettyMsgVo nettyMsgVo = JSONObject.parseObject(msg.toString(), NettyMsgVo.class);
-            BaseMsgHandler bean = (BaseMsgHandler) SpringUtil.getBean(ModuleKeyEnum.getEnum(nettyMsgVo.getModuleKey()).getBeanName());
+            ModuleKeyEnum anEnum = ModuleKeyEnum.getEnum(nettyMsgVo.getModuleKey());
+            System.out.println(anEnum.getBeanName());
+            BaseMsgHandler bean = (BaseMsgHandler) SpringUtil.getBean(anEnum.getBeanName());
             bean.msgHandler(JSON.toJSONString(nettyMsgVo.getData()));
-            //do something msg
-            /*ByteBuf buf = (ByteBuf) msg;
-            byte[] data = new byte[buf.readableBytes()];
-            buf.readBytes(data);
-            String request = new String(data, "utf-8");*/
-            System.out.println("Client: " + msg);
-            ctx.writeAndFlush("收到");
 
-        } finally {
+            System.out.println("Client: " + msg);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
             ReferenceCountUtil.release(msg);
         }
     }

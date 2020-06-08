@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +22,10 @@ public class StreamPushHandler extends BaseMsgHandler{
     private static String FFMPEG_PATH="H:\\ffmpeg-20190101-1dcb5b7-win64-static\\bin\\ffmpeg.exe";
     volatile ConcurrentHashMap<String, Process> pushMap=new ConcurrentHashMap<>();
     volatile ConcurrentHashMap<String, Integer> pushCountMap=new ConcurrentHashMap<>();
+    @PostConstruct
+    public void init(){
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
 
     @PreDestroy
     public void destroy(){
@@ -40,33 +45,7 @@ public class StreamPushHandler extends BaseMsgHandler{
         push(monitorVo);
     }
 
-    public static void main(String[] args) {
-        ConcurrentHashMap<String,String> map=new ConcurrentHashMap<>();
-        String s = map.putIfAbsent("1", "1");
-        String s1 = map.putIfAbsent("1", "2");
-        System.out.println(11);
-       /* PushWorkFactory pushWorkFactory=new PushWorkFactory();
-        MonitorVo monitorVo=new MonitorVo();
-        monitorVo.setAddress("rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov");
-        monitorVo.setRtmpServer("rtmp://127.0.0.1:1935/stream/test");
-        monitorVo.setUid("52011763-4cff-4839-849e-e26782b92f5a");
-        pushWorkFactory.push(monitorVo,true);*/
 
-
-        /*Runtime runtime = Runtime.getRuntime();
-        String s="cmd /C ffmpeg -re -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -acodec copy -f flv rtmp://127.0.0.1:1935/stream/test";
-        try {
-            Process exec = runtime.exec(s);
-            Thread.sleep(50000);
-            exec.destroy();
-            System.out.printf("exit");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
-    }
 
     public synchronized void push(MonitorVo monitorVo){
         if(monitorVo.getFlag()) {
@@ -89,16 +68,7 @@ public class StreamPushHandler extends BaseMsgHandler{
         }
     }
 
-   /* public synchronized void pushDone(MonitorVo monitorVo) {
-        Integer integer = pushCountMap.get(monitorVo.getAddress());
-        if(integer>1){
-            integer--;
-            pushCountMap.put(monitorVo.getAddress(),integer);
-        }else {
-            pushCountMap.put(monitorVo.getAddress(),0);
-            pushMap.put(monitorVo.getAddress(), false);
-        }
-    }*/
+
 
 
     /**
@@ -161,7 +131,7 @@ public class StreamPushHandler extends BaseMsgHandler{
                 return;
             }
             ffmpeg = builder.start();
-            new Thread(new PushProcessExcuteInfo(ffmpeg)).start();
+            new Thread(new PushProcessExcuteInfo(ffmpeg,uid)).start();
             //String result = waitForExcute(ffmpeg);
             // 输出执行的命令信息
 //            String cmdStr = Arrays.toString(ffmpegCmds.toArray()).replace(",", "");
@@ -211,9 +181,11 @@ public class StreamPushHandler extends BaseMsgHandler{
      */
     public class PushProcessExcuteInfo implements Runnable {
         private Process process;
+        private String uid;
 
-        public PushProcessExcuteInfo(Process process) {
+        public PushProcessExcuteInfo(Process process, String uid) {
             this.process = process;
+            this.uid = uid;
         }
 
         @Override
@@ -229,8 +201,8 @@ public class StreamPushHandler extends BaseMsgHandler{
                 errorStream = process.getErrorStream();
                 br1 = new BufferedReader(new InputStreamReader(inputStream));
                 br2 = new BufferedReader(new InputStreamReader(errorStream));
-                boolean finished = false;
-                while (!finished) {
+
+                while (pushMap.get(uid)!=null) {
                     try { // while内部使用一个try-catch块，这样当某一次循环读取抛出异常时，可以结束当次读取，返回条件处开始下一次读取
                         String line1 = null;
                         String line2 = null;
@@ -242,7 +214,6 @@ public class StreamPushHandler extends BaseMsgHandler{
                             returnStr.append(line2 + "\n");
                         }
                         exitValue = process.exitValue();
-                        finished = true;
                     } catch (IllegalThreadStateException e) { // 防止线程的start方法被重复调用
                         log.error("--- 本次读取标准输出流或错误流信息出错 --- 错误信息： " + e.getMessage());
                         Thread.sleep(500);

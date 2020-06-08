@@ -5,7 +5,7 @@ server:
 netty:
   port: 1234
   host: 127.0.0.1
-  clientId: 01
+  clientId: abc
 
 
 logging:

@@ -1,7 +1,8 @@
 package com.ruoyi.common.enums;
 
 public enum  ModuleKeyEnum{
-    STREEM_CALLBACK("STREEM_CALLBACK","streamPushHandler")
+    STREEM_CALLBACK("STREEM_CALLBACK","streamPushHandler"),
+    ID("ID","")
     ;
     private String code;
     private String beanName;
@@ -21,7 +22,7 @@ public enum  ModuleKeyEnum{
 
     public static ModuleKeyEnum getEnum(String code) {
         for (ModuleKeyEnum moduleKeyEnum : ModuleKeyEnum.values()) {
-            if (code == moduleKeyEnum.getCode()) {
+            if (code.equals(moduleKeyEnum.getCode())) {
                 return moduleKeyEnum;
             }
         }
