@@ -10,10 +10,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.enums.PicDiscernType;
-import com.ruoyi.common.smartutils.Base64Utils;
-import com.ruoyi.common.smartutils.FaceFeatureUtil;
-import com.ruoyi.common.smartutils.MatUtils;
-import com.ruoyi.common.smartutils.TesseracUtils;
+import com.ruoyi.common.smartutils.*;
 import com.ruoyi.common.vo.DiscernResultVo;
 import org.apache.commons.lang3.StringUtils;
 import org.bytedeco.javacpp.opencv_core;
@@ -140,6 +137,11 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
         }else if(type.equals( PicDiscernType.COMPARE.getType())){
             BufferedImage bufferedImage2 = ImageIO.read(files[1].getInputStream());
             discernResultVo=compare(bufferedImage,bufferedImage2);
+        }else if(type.equals(PicDiscernType.PLATE.getType())){
+            opencv_core.Mat mat = MatUtils.toMat(bufferedImage);
+            String[] ret= PlateRecognitionUtils.mutiPlateRecognise(mat);
+            discernResultVo=new DiscernResultVo();
+            discernResultVo.setResult("图片中共识别"+ret.length+"个车牌:"+StringUtils.join(ret,"、"));
         }
         picDiscernRecord.setResult(JSON.toJSONString(discernResultVo));
         insertPicDiscernRecord(picDiscernRecord);
@@ -194,5 +196,10 @@ public class PicDiscernRecordServiceImpl implements IPicDiscernRecordService
         }
 
         return discernResultVo;
+    }
+
+    public static void main(String[] args) {
+        String[] str={"1","2"};
+        System.out.println(StringUtils.join(str,"、"));
     }
 }

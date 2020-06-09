@@ -3,7 +3,8 @@ package com.ruoyi.common.enums;
 public enum PicDiscernType {
     FACE("1", "face"),
     CHARACTOR("2", "charactor"),
-    COMPARE("3", "compare");
+    COMPARE("3", "compare"),
+    PLATE("4", "plate");
 
     private final String type;
     private final String info;
