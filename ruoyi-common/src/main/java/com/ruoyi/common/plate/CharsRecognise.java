@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
 import com.ruoyi.common.plate.CoreFunc.Color;
+import org.bytedeco.javacpp.opencv_imgcodecs;
 
 /**
  * 字符分割识别（多字符）
@@ -36,6 +37,8 @@ public class CharsRecognise {
                 // the first is Chinese char as default 默认首个字符块是中文字符
                 String charcater = charsIdentify.charsIdentify(charMat, (0 == j), (1 == j));
                 plateIdentify = plateIdentify + charcater;
+                String str = "E:/test/tmp/debug_char_"+j+".jpg";
+                opencv_imgcodecs.imwrite(str, charMat);
             }
         }
 

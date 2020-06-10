@@ -96,12 +96,12 @@ public class PlateRecognitionUtils {
         int errNum=0;
         int sumTime=0;
         long longTime=0;
-        for(int i=sum;i>0;i--){
-            String imgPath = "E:\\java\\workspace\\mycloud\\smart\\image\\general_test\\zA88888.jpg";
+        /*for(int i=sum;i>0;i--){*/
+            String imgPath = "D:\\21.jpg";
             Mat src = opencv_imgcodecs.imread(imgPath);
             long now =System.currentTimeMillis();
             String ret=plateRecognise(src);
-            System.err.println(ret);
+            System.out.println(ret);
             long s=System.currentTimeMillis()-now;
             if(s>longTime){
                 longTime=s;
@@ -110,13 +110,13 @@ public class PlateRecognitionUtils {
             if(!"鲁B995EQ".equals(ret)){
                 errNum++;
             }
-        }
+      /*  }
         System.err.println("总数量："+sum);
         System.err.println("单次最长耗时："+longTime+"ms");
 
         BigDecimal errSum=new BigDecimal(errNum);
         BigDecimal sumNum=new BigDecimal(sum);
         BigDecimal c=sumNum.subtract(errSum).divide(sumNum).multiply(new BigDecimal(100));
-        System.err.println("总耗时："+sumTime+"ms,平均处理时长："+sumTime/sum+"ms,错误数量："+errNum+"，正确识别率："+c+"%");
+        System.err.println("总耗时："+sumTime+"ms,平均处理时长："+sumTime/sum+"ms,错误数量："+errNum+"，正确识别率："+c+"%");*/
     }
 }
